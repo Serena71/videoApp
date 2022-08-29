@@ -81,7 +81,9 @@ export const like = async (req, res, next) => {
   if (!video) return next(createError(404, 'Video not found'));
   try {
     await Video.findByIdAndUpdate(req.params.videoId, {
+      // use addToSet to ensure id is in array only once
       $addToSet: { likes: req.user.id },
+      $pull: { dislikes: req.user.id },
     });
     res.status(200).json('Liked the video successfully');
   } catch (err) {
@@ -94,6 +96,7 @@ export const dislike = async (req, res, next) => {
   try {
     await Video.findByIdAndUpdate(req.params.videoId, {
       $pull: { likes: req.user.id },
+      $addToSet: { dislikes: req.user.id },
     });
     res.status(200).json('Disliked the video successfully');
   } catch (err) {
