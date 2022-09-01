@@ -13,6 +13,7 @@ import {
 } from './MenuItemList';
 
 import { LoginButton } from './LoginButton';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   flex: 1;
@@ -68,10 +69,13 @@ const Menu = ({ darkMode, setDarkMode }) => {
   return (
     <Container>
       <Wrapper>
-        <Logo>
-          <Img src="img.svg" />
-          Youtube
-        </Logo>
+        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Logo>
+            <Img src="img.svg" />
+            Youtube
+          </Logo>
+        </Link>
+
         {menuItemList1.map((item, idx) => (
           <Item key={idx}>
             {menuIconList1[idx]}
