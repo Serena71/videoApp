@@ -1,12 +1,12 @@
-import styled from 'styled-components';
+import { useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import styled, { ThemeProvider } from 'styled-components';
 import Menu from './components/Menu';
 import Navbar from './components/Navbar';
-import { ThemeProvider } from 'styled-components';
-import { darkTheme, lightTheme } from './utils/Theme';
-import { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import Signin from './pages/Signin';
 import Video from './pages/Video';
+import { darkTheme, lightTheme } from './utils/Theme';
 
 const Container = styled.div`
   display: flex;
@@ -14,7 +14,7 @@ const Container = styled.div`
 
 const Main = styled.div`
   flex: 7;
-  background-color: ${({ theme }) => theme.bgLigher};
+  background-color: ${({ theme }) => theme.bg};
   color: ${({ theme }) => theme.text};
 `;
 
@@ -35,6 +35,7 @@ function App() {
               <Routes>
                 <Route path="/">
                   <Route index element={<Home />} />
+                  <Route path="signin" element={<Signin />} />
                   <Route path="video">
                     <Route path=":id" element={<Video />} />
                   </Route>

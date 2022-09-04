@@ -17,7 +17,7 @@ import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   flex: 1;
-  background-color: ${({ theme }) => theme.bg};
+  background-color: ${({ theme }) => theme.bgLighter};
   color: ${({ theme }) => theme.text};
   font-size: 14px;
   position: sticky;
@@ -47,6 +47,7 @@ const Item = styled.div`
   cursor: pointer;
   padding: 7.5px;
   gap: 20px;
+  /* background-color: inherit; */
   &:hover {
     background-color: ${({ theme }) => theme.soft};
   }
@@ -96,7 +97,9 @@ const Menu = ({ darkMode, setDarkMode }) => {
 
         <Signin>
           Sign in to like videos, comment, and subscribe.
-          <LoginButton />
+          <Link to="signin" style={{ textDecoration: 'none' }}>
+            <LoginButton />
+          </Link>
         </Signin>
 
         <Hr variant="middle" />

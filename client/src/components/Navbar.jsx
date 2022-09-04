@@ -2,9 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { LoginButton } from './LoginButton';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
-  background-color: ${({ theme }) => theme.bg};
+  background-color: ${({ theme }) => theme.bgLighter};
   color: ${({ theme }) => theme.text};
   font-size: 14px;
   position: sticky;
@@ -48,7 +49,9 @@ const Navbar = () => {
           <Input placeholder="Search"></Input>
           <SearchOutlinedIcon />
         </Search>
-        <LoginButton />
+        <Link to="signin" style={{ textDecoration: 'none' }}>
+          <LoginButton />
+        </Link>
       </Wrapper>
     </Container>
   );
