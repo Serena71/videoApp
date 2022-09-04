@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Avatar from './Avatar';
 
 const Container = styled.div`
   width: 360px;
@@ -17,13 +18,6 @@ const CardDetail = styled.div`
   display: flex;
   gap: 20px;
   margin-top: 16px;
-`;
-
-const ProfileImg = styled.img`
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-color: #fff;
 `;
 
 const CardText = styled.div``;
@@ -52,7 +46,7 @@ const Card = () => {
       <Container>
         <CardImg />
         <CardDetail>
-          <ProfileImg />
+          <Avatar width="36" height="36" />
           <CardText>
             <Title>Card title</Title>
             <ChannelName>Author name</ChannelName>
