@@ -48,7 +48,7 @@ const Item = styled.div`
   padding: 7.5px;
   gap: 20px;
   &:hover {
-    background-color: ${({ theme }) => theme.hover};
+    background-color: ${({ theme }) => theme.soft};
   }
 `;
 
