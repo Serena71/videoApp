@@ -13,7 +13,7 @@ const Container = styled.div`
 const CardImg = styled.img`
   width: 100%;
   height: ${(props) => (props.type === 'sm' ? '120px' : '202px')};
-  background-color: #fff;
+  background-color: #bbb;
   flex: 1;
 `;
 
