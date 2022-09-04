@@ -21,13 +21,14 @@ const User = styled.span`
   margin-right: 10px;
 `;
 
-const Time = styled.span`
+const Date = styled.span`
   font-size: 12px;
   color: ${({ theme }) => theme.textSoft};
 `;
 
 const Text = styled.p`
   font-size: 14px;
+  color: ${({ theme }) => theme.text};
 `;
 
 const Comment = () => {
@@ -37,7 +38,7 @@ const Comment = () => {
       <Content>
         <ContentHeader>
           <User>Serena Zhang</User>
-          <Time>1 hour ago</Time>
+          <Date>1 hour ago</Date>
         </ContentHeader>
         <Text>
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero, a omnis? Harum neque obcaecati sit quo
