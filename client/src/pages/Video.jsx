@@ -8,6 +8,7 @@ import ButtonMui from '@mui/material/Button';
 import styledMui from '@mui/material/styles/styled';
 import Avatar from '../components/Avatar';
 import Comments from '../components/Comments';
+import Card from '../components/Card';
 
 const Container = styled.div`
   display: flex;
@@ -105,12 +106,12 @@ const Video = () => {
           <iframe
             width="100%"
             height="750"
-            src="https://www.youtube.com/embed/RkWpJ4XUHuw"
+            src="https://www.youtube.com/embed/rMiRZ1iRC0A"
             title="YouTube video player"
             frameBorder="8"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-            style={{ border: 'none' }}
+            frameborder="0"
           ></iframe>
         </VideoWrapper>
         <Title>This Video</Title>
@@ -156,7 +157,9 @@ const Video = () => {
         <Hr />
         <Comments />
       </Content>
-      <Recommendation></Recommendation>
+      <Recommendation>
+        <Card type="sm" />
+      </Recommendation>
     </Container>
   );
 };

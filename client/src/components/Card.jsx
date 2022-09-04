@@ -4,23 +4,30 @@ import styled from 'styled-components';
 import Avatar from './Avatar';
 
 const Container = styled.div`
-  width: 360px;
-  margin-bottom: 30px;
+  width: ${(props) => props.type !== 'sm' && '360px'};
+  margin-bottom: ${(props) => (props.type === 'sm' ? '10px' : '45px')};
+  display: ${(props) => props.type === 'sm' && 'flex'};
+  gap: 10px;
 `;
 
 const CardImg = styled.img`
   width: 100%;
-  height: 202px;
+  height: ${(props) => (props.type === 'sm' ? '120px' : '202px')};
   background-color: #fff;
+  flex: 1;
 `;
 
 const CardDetail = styled.div`
   display: flex;
+  flex-direction: ${(props) => (props.type === 'sm' ? 'column' : 'row')};
   gap: 20px;
-  margin-top: 16px;
+  margin-top: ${(props) => props.type !== 'sm' && '16px'};
+  flex: 1;
 `;
 
-const CardText = styled.div``;
+const CardText = styled.div`
+  color: ${({ theme }) => theme.text};
+`;
 
 const Title = styled.h1`
   margin-top: 0;
@@ -40,13 +47,13 @@ const Info = styled.div`
   color: ${({ theme }) => theme.textSoft};
 `;
 
-const Card = () => {
+const Card = ({ type }) => {
   return (
     <Link to="video/test" style={{ textDecoration: 'none' }}>
-      <Container>
-        <CardImg />
-        <CardDetail>
-          <Avatar width="36" height="36" />
+      <Container type={type}>
+        <CardImg type={type} />
+        <CardDetail type={type}>
+          {type !== 'sm' && <Avatar width="36" height="36" />}
           <CardText>
             <Title>Card title</Title>
             <ChannelName>Author name</ChannelName>
