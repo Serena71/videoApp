@@ -4,6 +4,7 @@ export const darkTheme = {
   text: 'white',
   textSoft: '#aaaaaa',
   soft: '#373737',
+  hover: '#565656',
 };
 
 export const lightTheme = {
@@ -11,5 +12,6 @@ export const lightTheme = {
   bgLigher: 'white',
   text: 'black',
   textSoft: '#606060',
-  soft: '#f0f0f0',
+  soft: '#ddd',
+  hover: '#eee',
 };
