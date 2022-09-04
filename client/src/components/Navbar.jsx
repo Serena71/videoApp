@@ -39,6 +39,8 @@ const Input = styled.input`
   background-color: transparent;
   margin-left: 10px;
   width: 90%;
+  caret-color: ${({ theme }) => theme.text};
+  outline: none;
 `;
 
 const Navbar = () => {
@@ -46,7 +48,7 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Search>
-          <Input placeholder="Search"></Input>
+          <Input placeholder=" Search"></Input>
           <SearchOutlinedIcon />
         </Search>
         <Link to="signin" style={{ textDecoration: 'none' }}>
