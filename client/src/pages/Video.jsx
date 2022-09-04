@@ -7,6 +7,7 @@ import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
 import ButtonMui from '@mui/material/Button';
 import styledMui from '@mui/material/styles/styled';
 import Avatar from '../components/Avatar';
+import Comments from '../components/Comments';
 
 const Container = styled.div`
   display: flex;
@@ -153,6 +154,7 @@ const Video = () => {
           <Subscribe variant="contained">Subscribe</Subscribe>
         </Channel>
         <Hr />
+        <Comments />
       </Content>
       <Recommendation></Recommendation>
     </Container>
