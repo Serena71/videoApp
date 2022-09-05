@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import ButtonMui from '@mui/material/Button';
-import styledMui from '@mui/material/styles/styled';
 
 const Container = styled.div`
   display: flex;
@@ -34,20 +33,33 @@ const Input = styled.input`
   width: 100%;
 `;
 
+const Button = styled(ButtonMui)`
+  && {
+    background-color: ${({ theme }) => theme.soft};
+    color: ${({ theme }) => theme.text};
+    border-color: ${({ theme }) => theme.soft};
+    &:hover {
+      color: ${({ theme }) => theme.textSoft};
+      border-color: ${({ theme }) => theme.textSoft};
+    }
+  }
+`;
+
 const Signin = () => {
   return (
     <Container>
       <Wrapper>
         <Title>Sign In</Title>
         <Subtitle>to continue as Serena</Subtitle>
-        <Input type="email" placeholder="Email Address" />
+        <Input type="text" placeholder="User Name" />
         <Input type="password" placeholder="Password" />
-        <ButtonMui variant="outlined">Sign in</ButtonMui>
+        <Button variant="outlined">Sign in</Button>
         <Subtitle>Or</Subtitle>
         <Title>Sign Up</Title>
+        <Input type="text" placeholder="User Name" />
         <Input type="email" placeholder="Email Address" />
         <Input type="password" placeholder="Password" />
-        <ButtonMui variant="outlined">Sign up</ButtonMui>
+        <Button variant="outlined">Sign up</Button>
       </Wrapper>
     </Container>
   );
