@@ -1,16 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import {
-  menuItemList1,
-  menuIconList1,
-  menuItemList2,
-  menuIconList2,
-  menuItemList3,
-  menuIconList3,
-  menuItemList4,
-  menuIconList4,
-} from './MenuItemList';
+import { menuItemList1, menuItemList2, menuItemList3, menuItemList4 } from './MenuItemList';
 
 import { LoginButton } from './LoginButton';
 import { Link } from 'react-router-dom';
@@ -22,7 +13,7 @@ const Container = styled.div`
   font-size: 14px;
   position: sticky;
   top: 0;
-  height: 100vh;
+  /* height: 100vh; */
 `;
 
 const Wrapper = styled.div`
@@ -75,23 +66,27 @@ const Menu = ({ darkMode, setDarkMode }) => {
       <Wrapper>
         <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
           <Logo>
-            <Img src="img.svg" />
+            <Img />
             Youtube
           </Logo>
         </Link>
 
-        {menuItemList1.map((item, idx) => (
-          <Item key={idx}>
-            {menuIconList1[idx]}
-            {item}
-          </Item>
+        {menuItemList1.map((item) => (
+          <Link key={item.name} to={item.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Item>
+              {item.icon}
+              {item.name}
+            </Item>
+          </Link>
         ))}
         <Hr variant="middle" />
-        {menuItemList2.map((item, idx) => (
-          <Item key={idx}>
-            {menuIconList2[idx]}
-            {item}
-          </Item>
+        {menuItemList2.map((item) => (
+          <Link key={item.name} to={item.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Item>
+              {item.icon}
+              {item.name}
+            </Item>
+          </Link>
         ))}
         <Hr variant="middle" />
 
@@ -104,34 +99,42 @@ const Menu = ({ darkMode, setDarkMode }) => {
 
         <Hr variant="middle" />
         <Title>Find More</Title>
-        {menuItemList3.map((item, idx) => (
-          <Item key={idx}>
-            {menuIconList3[idx]}
-            {item}
-          </Item>
+
+        {menuItemList3.map((item) => (
+          <Link key={item.name} to={item.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Item>
+              {item.icon}
+              {item.name}
+            </Item>
+          </Link>
         ))}
+
         <Hr variant="middle" />
-        {menuItemList4.map((item, idx) => {
-          if (item === 'Mode') {
-            item = darkMode ? 'Light Mode' : 'Dark Mode';
+
+        {menuItemList4.map((item) => {
+          if (item.name === 'Mode') {
+            console.log('mode');
             return (
               <Item
-                key={idx}
+                key={item.name}
                 onClick={() => {
                   setDarkMode(!darkMode);
                 }}
               >
-                {menuIconList4[idx]}
-                {item}
+                {item.icon}
+                {darkMode ? 'Light Mode' : 'Dark Mode'}
               </Item>
             );
+          } else {
+            return (
+              <Link key={item.name} to={item.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Item>
+                  {item.icon}
+                  {item.name}
+                </Item>
+              </Link>
+            );
           }
-          return (
-            <Item key={idx}>
-              {menuIconList4[idx]}
-              {item}
-            </Item>
-          );
         })}
       </Wrapper>
     </Container>

@@ -14,26 +14,29 @@ import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import SettingsBrightnessOutlinedIcon from '@mui/icons-material/SettingsBrightnessOutlined';
 
-export const menuItemList1 = ['Home', 'Explore', 'Subscription'];
-export const menuIconList1 = [<HomeIcon />, <ExploreOutlinedIcon />, <SubscriptionsOutlinedIcon />];
-
-export const menuItemList2 = ['Library', 'History'];
-export const menuIconList2 = [<VideoLibraryOutlinedIcon />, <HistoryOutlinedIcon />];
-
-export const menuItemList3 = ['Music', 'Sports', 'Gaming', 'Movies', 'News', 'Live'];
-export const menuIconList3 = [
-  <LibraryMusicOutlinedIcon />,
-  <SportsBasketballOutlinedIcon />,
-  <SportsEsportsOutlinedIcon />,
-  <MovieCreationOutlinedIcon />,
-  <ArticleOutlinedIcon />,
-  <LiveTvOutlinedIcon />,
+export const menuItemList1 = [
+  { path: '/', name: 'Home', icon: <HomeIcon /> },
+  { path: 'trends', name: 'Explore', icon: <ExploreOutlinedIcon /> },
+  { path: 'subscriptions', name: 'Subscription', icon: <SubscriptionsOutlinedIcon /> },
 ];
 
-export const menuItemList4 = ['Settings', 'Report', 'Help', 'Mode'];
-export const menuIconList4 = [
-  <SettingsOutlinedIcon />,
-  <FlagOutlinedIcon />,
-  <HelpOutlineOutlinedIcon />,
-  <SettingsBrightnessOutlinedIcon />,
+export const menuItemList2 = [
+  { path: 'library', name: 'Library', icon: <VideoLibraryOutlinedIcon /> },
+  { path: 'history', name: 'History', icon: <HistoryOutlinedIcon /> },
+];
+
+export const menuItemList3 = [
+  { path: 'music', name: 'Music', icon: <LibraryMusicOutlinedIcon /> },
+  { path: 'sports', name: 'Sports', icon: <SportsBasketballOutlinedIcon /> },
+  { path: 'gaming', name: 'Gaming', icon: <SportsEsportsOutlinedIcon /> },
+  { path: 'movies', name: 'Movies', icon: <MovieCreationOutlinedIcon /> },
+  { path: 'news', name: 'News', icon: <ArticleOutlinedIcon /> },
+  { path: 'live', name: 'Live', icon: <LiveTvOutlinedIcon /> },
+];
+
+export const menuItemList4 = [
+  { path: 'settings', name: 'Settings', icon: <SettingsOutlinedIcon /> },
+  { path: 'report', name: 'Report', icon: <FlagOutlinedIcon /> },
+  { path: 'help', name: 'Help', icon: <HelpOutlineOutlinedIcon /> },
+  { name: 'Mode', icon: <SettingsBrightnessOutlinedIcon /> },
 ];
