@@ -1,16 +1,15 @@
-import styledMui from '@mui/material/styles/styled';
 import AvatarMui from '@mui/material/Avatar';
 import React from 'react';
+import styled from 'styled-components';
 
-const Avatar = ({ width, height, src }) => {
-  //   const width = width;
-  //   const height = height;
-  const AvatarStyled = styledMui(AvatarMui)`
-    width: ${width}px;
-    height: ${height}px;
-    `;
-
-  return <AvatarStyled src={src} />;
-};
+const Avatar = styled(AvatarMui).attrs((props) => ({
+  width: props.width,
+  height: props.height,
+}))`
+  && {
+    width: ${(props) => props.width}px;
+    height: ${(props) => props.height}px;
+  }
+`;
 
 export default Avatar;
