@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import Avatar from './Avatar';
+import { format } from 'timeago.js';
 
 const Container = styled.div`
   display: flex;
@@ -31,19 +33,29 @@ const Text = styled.p`
   color: ${({ theme }) => theme.text};
 `;
 
-const Comment = () => {
+const Comment = ({ comment }) => {
+  console.log(comment);
+  const [commenUser, setCommentUser] = useState({});
+
+  useEffect(() => {
+    const getCommentUser = async () => {
+      try {
+        const res = await axios.get(`/users/find/${comment.userId}`);
+        setCommentUser(res.data);
+      } catch (err) {}
+    };
+    getCommentUser();
+  }, [comment.userId]);
+
   return (
     <Container>
       <Avatar width="36" height="36" />
       <Content>
         <ContentHeader>
-          <User>Serena Zhang</User>
-          <Date>1 hour ago</Date>
+          <User>{commenUser.name}</User>
+          <Date>{format(comment.updatedAt)}</Date>
         </ContentHeader>
-        <Text>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero, a omnis? Harum neque obcaecati sit quo
-          explicabo enim, nemo quas eos veniam, quisquam tempora id cupiditate, accusantium qui nam ut.
-        </Text>
+        <Text>{comment.desc}</Text>
       </Content>
     </Container>
   );
