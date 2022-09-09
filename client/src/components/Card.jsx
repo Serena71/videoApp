@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Avatar from './Avatar';
 import { format } from 'timeago.js';
 
 const Container = styled.div`
@@ -44,6 +43,13 @@ const ChannelName = styled.h2`
   color: ${({ theme }) => theme.textSoft};
 `;
 
+const ChannelImg = styled.img`
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #fff;
+`;
+
 const Info = styled.div`
   font-size: 14px;
   color: ${({ theme }) => theme.textSoft};
@@ -65,14 +71,13 @@ const Card = ({ type, video }) => {
       <Container type={type}>
         <CardImg type={type} src={video.imgURL} />
         <CardDetail type={type}>
-          {type !== 'sm' && <Avatar src={user.img} width="36" height="36" />}
+          {type !== 'sm' && <ChannelImg src={user.img} />}
           <CardText>
             <Title>{video.title}</Title>
             <ChannelName>{user.name}</ChannelName>
             <Info>
               {video.views} views • {format(video.createdAt)}
             </Info>
-            {/* <Info>100 views &dot; 18 hours ago</Info> */}
           </CardText>
         </CardDetail>
       </Container>
