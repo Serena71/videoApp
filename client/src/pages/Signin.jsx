@@ -1,6 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
 import ButtonMui from '@mui/material/Button';
+import axios from 'axios';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { failedLogin, startLogin, successfulLogin } from '../redux/userSlice';
+import { auth, provider } from '../firebase.js';
+import { signInWithPopup } from 'firebase/auth';
 
 const Container = styled.div`
   display: flex;
@@ -29,6 +34,7 @@ const Input = styled.input`
   border: 1px solid ${({ theme }) => theme.soft};
   caret-color: ${({ theme }) => theme.text};
   background-color: transparent;
+  color: ${({ theme }) => theme.text};
   padding: 10px;
   width: 100%;
 `;
@@ -46,20 +52,62 @@ const Button = styled(ButtonMui)`
 `;
 
 const Signin = () => {
+  const [credentials, setCredentials] = useState({ name: '', password: '' });
+  const dispatch = useDispatch();
+
+  const updateCredentials = (e) => {
+    setCredentials((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const signin = async (e) => {
+    e.preventDefault();
+    dispatch(startLogin());
+    try {
+      const res = await axios.post('/auth/signin', credentials);
+      dispatch(successfulLogin(res.data)); // storing user data
+    } catch (e) {
+      dispatch(failedLogin());
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    dispatch(startLogin());
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        axios
+          .post('/auth/google', {
+            name: result.user.displayName,
+            email: result.user.email,
+            img: result.user.photoURL,
+          })
+          .then((res) => dispatch(successfulLogin(res.data)));
+      })
+      .catch((error) => {
+        dispatch(failedLogin());
+      });
+  };
+
   return (
     <Container>
       <Wrapper>
         <Title>Sign In</Title>
         <Subtitle>to continue as Serena</Subtitle>
-        <Input type="text" placeholder="User Name" />
-        <Input type="password" placeholder="Password" />
-        <Button variant="outlined">Sign in</Button>
+        <Input type="text" name="name" placeholder="User Name" onChange={updateCredentials} />
+        <Input type="password" name="password" placeholder="Password" onChange={updateCredentials} />
+        <Button variant="outlined" onClick={signin}>
+          Sign in
+        </Button>
         <Subtitle>Or</Subtitle>
         <Title>Sign Up</Title>
-        <Input type="text" placeholder="User Name" />
-        <Input type="email" placeholder="Email Address" />
-        <Input type="password" placeholder="Password" />
+        <Input type="text" name="name" placeholder="User Name" />
+        <Input type="email" name="email" placeholder="Email Address" />
+        <Input type="password" name="password" placeholder="Password" />
         <Button variant="outlined">Sign up</Button>
+
+        <Subtitle>Or</Subtitle>
+        <Button variant="outlined" onClick={signInWithGoogle}>
+          Sign in with Google
+        </Button>
       </Wrapper>
     </Container>
   );

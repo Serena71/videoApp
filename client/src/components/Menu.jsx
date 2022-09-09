@@ -5,6 +5,7 @@ import { menuItemList1, menuItemList2, menuItemList3, menuItemList4 } from './Me
 
 import { LoginButton } from './LoginButton';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Container = styled.div`
   flex: 1;
@@ -13,7 +14,7 @@ const Container = styled.div`
   font-size: 14px;
   position: sticky;
   top: 0;
-  /* height: 100vh; */
+  height: 100vh;
 `;
 
 const Wrapper = styled.div`
@@ -61,6 +62,7 @@ const Title = styled.h2`
 `;
 
 const Menu = ({ darkMode, setDarkMode }) => {
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <Container>
       <Wrapper>
@@ -90,14 +92,18 @@ const Menu = ({ darkMode, setDarkMode }) => {
         ))}
         <Hr variant="middle" />
 
-        <Signin>
-          Sign in to like videos, comment, and subscribe.
-          <Link to="signin" style={{ textDecoration: 'none' }}>
-            <LoginButton />
-          </Link>
-        </Signin>
+        {!currentUser && (
+          <>
+            <Signin>
+              Sign in to like videos, comment, and subscribe.
+              <Link to="signin" style={{ textDecoration: 'none' }}>
+                <LoginButton />
+              </Link>
+            </Signin>
 
-        <Hr variant="middle" />
+            <Hr variant="middle" />
+          </>
+        )}
         <Title>Find More</Title>
 
         {menuItemList3.map((item) => (
@@ -113,7 +119,6 @@ const Menu = ({ darkMode, setDarkMode }) => {
 
         {menuItemList4.map((item) => {
           if (item.name === 'Mode') {
-            console.log('mode');
             return (
               <Item
                 key={item.name}
