@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      // required: true, // may use google for auth which does not have password
     },
     img: {
       type: String,
@@ -25,6 +25,10 @@ const UserSchema = new mongoose.Schema(
     },
     subscriberedUsers: {
       type: [String], // array of user ID
+    },
+    fromGoogle: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }
