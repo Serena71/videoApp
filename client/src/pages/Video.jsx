@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
 import ButtonMui from '@mui/material/Button';
-import styledMui from '@mui/material/styles/styled';
 import Avatar from '../components/Avatar';
 import Comments from '../components/Comments';
-import Card from '../components/Card';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { startFetch, successfulFetch, failedFetch, videoReaction } from '../redux/videoSlice';
+import { subscription } from '../redux/userSlice';
+import { format } from 'timeago.js';
 
 const Container = styled.div`
   display: flex;
@@ -58,12 +64,16 @@ const Channel = styled.div`
   justify-content: space-between;
 `;
 
-const Subscribe = styledMui(ButtonMui)`
-  width: 90px;
-  height: 40px;
-  font-weight:bold;
-  background-color:red;
-  &:hover { background-color:darkred; }
+const Subscribe = styled(ButtonMui)`
+  && {
+    width: 90px;
+    height: 40px;
+    font-weight: bold;
+    background-color: ${(props) => (props.$sub ? 'grey' : 'red')};
+    &:hover {
+      background-color: ${(props) => (props.$sub ? 'darkgrey' : 'darkred')};
+    }
+  }
 `;
 
 const ChannelInfo = styled.div`
@@ -90,40 +100,80 @@ const ChannelCounter = styled.span`
   margin-bottom: 20px;
 `;
 
-const ChannelDescription = styled.p`
+const Description = styled.p`
   font-size: 14px;
 `;
 
-const Recommendation = styled.div`
-  flex: 2;
-`;
-
 const Video = () => {
+  const { currentUser } = useSelector((state) => state.user);
+  const { currentVideo } = useSelector((state) => state.video);
+
+  const dispatch = useDispatch();
+
+  const params = useParams();
+
+  const [channel, setChannel] = useState({});
+
+  useEffect(() => {
+    const getVideo = async () => {
+      try {
+        dispatch(startFetch);
+        const videoRes = await axios.get(`/videos/find/${params.id}`);
+        const channelRes = await axios.get(`/users/find/${videoRes.data.userId}`);
+        setChannel(channelRes.data);
+        dispatch(successfulFetch(videoRes.data));
+      } catch (err) {
+        dispatch(failedFetch());
+      }
+    };
+    getVideo();
+  }, [params, dispatch]);
+
+  const handleLike = async () => {
+    await axios.put(`/users/like/${currentVideo._id}`);
+    dispatch(videoReaction({ reaction: 'like', user: currentUser._id }));
+  };
+
+  const handleDislike = async () => {
+    await axios.put(`/users/dislike/${currentVideo._id}`);
+    dispatch(videoReaction({ reaction: 'dislike', user: currentUser._id }));
+  };
+
+  const handleSubscribe = async () => {
+    if (!currentUser.subscriberedUsers.includes(channel._id)) {
+      await axios.put(`/users/sub/${channel._id}`);
+    } else {
+      await axios.put(`/users/unsub/${channel._id}`);
+    }
+    dispatch(subscription(channel._id));
+  };
+
   return (
     <Container>
       <Content>
         <VideoWrapper>
-          <iframe
+          {/* <iframe
             width="100%"
             height="750"
             src="https://www.youtube.com/embed/rMiRZ1iRC0A"
             title="YouTube video player"
-            frameBorder="8"
+            frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-            frameborder="0"
-          ></iframe>
+            allowFullScreen
+          ></iframe> */}
         </VideoWrapper>
-        <Title>This Video</Title>
+        <Title>{currentVideo.title}</Title>
         <Details>
-          <Info>INFO</Info>
+          <Info>
+            {currentVideo.views} views • {format(currentVideo.createdAt)}
+          </Info>
           <Buttons>
-            <Button>
-              <ThumbUpOutlinedIcon />
-              Like
+            <Button onClick={handleLike}>
+              {currentVideo.likes?.includes(currentUser._id) ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />}
+              {currentVideo.likes?.length} {currentVideo.likes?.length > 1 ? 'Likes' : 'Like'}
             </Button>
-            <Button>
-              <ThumbDownOutlinedIcon />
+            <Button onClick={handleDislike}>
+              {currentVideo.dislikes?.includes(currentUser._id) ? <ThumbDownIcon /> : <ThumbDownOutlinedIcon />}
               Dislike
             </Button>
             <Button>
@@ -139,27 +189,26 @@ const Video = () => {
         <Hr />
         <Channel>
           <ChannelInfo>
-            <Avatar width="50" height="50" />
+            <Avatar width="50" height="50" src={channel.img} />
             <ChannelInfoContent>
-              <ChannelName>Channel Name</ChannelName>
-              <ChannelCounter>123 subscribers</ChannelCounter>
-              <ChannelDescription>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum, culpa rerum eos unde iusto est
-                temporibus nobis laudantium vel nam ut facilis voluptas laboriosam alias laborum vitae cumque, officia
-                explicabo? Lorem ipsum dolor, sit amet consectetur adipisicing elit. Obcaecati recusandae blanditiis
-                fuga rerum, asperiores a at voluptatum accusantium, repudiandae doloribus ex, aut accusamus quia
-                exercitationem ducimus! Veniam dolore praesentium quas.
-              </ChannelDescription>
+              <ChannelName>{channel.name}</ChannelName>
+              <ChannelCounter>{channel.subscribers} subscribers</ChannelCounter>
+              <Description>{currentVideo.description}</Description>
             </ChannelInfoContent>
           </ChannelInfo>
-          <Subscribe variant="contained">Subscribe</Subscribe>
+          <Subscribe
+            variant="contained"
+            // use transient props ($) which prevents the props being passed to the DOM element for the boolean props
+            $sub={currentUser.subscriberedUsers?.includes(channel._id)}
+            onClick={handleSubscribe}
+          >
+            {currentUser.subscriberedUsers?.includes(channel._id) ? 'Subscibed' : 'Subscibe'}
+          </Subscribe>
         </Channel>
         <Hr />
-        <Comments />
+        <Comments videoId={currentVideo._id} />
       </Content>
-      <Recommendation>
-        <Card type="sm" />
-      </Recommendation>
+      {/* <Recommendation baseVideo={}/> */}
     </Container>
   );
 };
