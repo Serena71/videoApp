@@ -1,11 +1,12 @@
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import VideoCallOutlinedIcon from '@mui/icons-material/VideoCallOutlined';
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Avatar from './Avatar';
 import { LoginButton } from './LoginButton';
+import NewVideo from './NewVideo';
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.bgLighter};
@@ -56,26 +57,30 @@ const User = styled.div`
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const [open, setOpen] = useState(false);
   return (
-    <Container>
-      <Wrapper>
-        <Search>
-          <Input placeholder=" Search"></Input>
-          <SearchOutlinedIcon />
-        </Search>
-        {currentUser ? (
-          <User>
-            <VideoCallOutlinedIcon />
-            <Avatar width="36" height="36" src={currentUser.img} />
-            {currentUser.name}
-          </User>
-        ) : (
-          <Link to="signin" style={{ textDecoration: 'none' }}>
-            <LoginButton />
-          </Link>
-        )}
-      </Wrapper>
-    </Container>
+    <>
+      <Container>
+        <Wrapper>
+          <Search>
+            <Input placeholder=" Search"></Input>
+            <SearchOutlinedIcon />
+          </Search>
+          {currentUser ? (
+            <User>
+              <VideoCallOutlinedIcon onClick={() => setOpen(true)} />
+              <Avatar width="36" height="36" src={currentUser.img} />
+              {currentUser.name}
+            </User>
+          ) : (
+            <Link to="signin" style={{ textDecoration: 'none' }}>
+              <LoginButton />
+            </Link>
+          )}
+        </Wrapper>
+      </Container>
+      <NewVideo open={open} setOpen={setOpen} />
+    </>
   );
 };
 
