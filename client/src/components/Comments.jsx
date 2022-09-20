@@ -27,11 +27,11 @@ const CommentSections = styled.div`
 const Input = styled.input`
   width: 100%;
   background-color: transparent;
+  color: ${({ theme }) => theme.text};
   border: none;
   border-bottom: 1px solid ${({ theme }) => theme.soft};
   padding: 5px 0;
   outline: none;
-  caret-color: ${({ theme }) => theme.text};
   &:focus {
     transition: linear 0.5s;
     border-bottom: 1px solid ${({ theme }) => theme.text};

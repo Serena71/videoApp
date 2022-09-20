@@ -41,9 +41,9 @@ const Search = styled.div`
 const Input = styled.input`
   border: none;
   background-color: transparent;
+  color: ${({ theme }) => theme.text};
   margin-left: 10px;
   width: 90%;
-  caret-color: ${({ theme }) => theme.text};
   outline: none;
 `;
 
