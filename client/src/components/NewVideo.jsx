@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog } from '@mui/material';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 // firebase storage to upload files
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { useEffect } from 'react';
@@ -65,6 +66,9 @@ const NewVideo = ({ open, setOpen }) => {
   const [files, setFiles] = useState({});
   const [percentages, setPercentages] = useState({});
   const [inputs, setInputs] = useState({});
+  const [task, setTask] = useState({});
+
+  const navigate = useNavigate();
 
   const updateInput = (e) => {
     if (e.target.name === 'tags') {
@@ -77,8 +81,20 @@ const NewVideo = ({ open, setOpen }) => {
       });
     }
   };
-
-  const uploadFile = async (file, fileType) => {
+  // const manageFileUpload = (uploadTask, operation) => {
+  //   switch (operation) {
+  //     case 'pause':
+  //       uploadTask?.pause();
+  //       break;
+  //     case 'resume':
+  //       uploadTask?.resume();
+  //       break;
+  //     case 'cancel':
+  //       uploadTask?.cancel();
+  //       break;
+  //   }
+  // };
+  const uploadFile = (file, fileType) => {
     // Create a root reference
     const storage = getStorage();
     // Create a unique filename for each file
@@ -86,11 +102,8 @@ const NewVideo = ({ open, setOpen }) => {
     // Create a reference to file
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
+    setTask(uploadTask);
 
-    // Register three observers:
-    // 1. 'state_changed' observer, called any time the state changes
-    // 2. Error observer, called on failure
-    // 3. Completion observer, called on successful completion
     uploadTask.on(
       'state_changed',
       (snapshot) => {
@@ -98,6 +111,7 @@ const NewVideo = ({ open, setOpen }) => {
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setPercentages({ ...percentages, [fileType]: Math.round(progress) });
+        console.log(snapshot.state);
         switch (snapshot.state) {
           case 'paused':
             console.log('Upload is paused');
@@ -106,6 +120,7 @@ const NewVideo = ({ open, setOpen }) => {
             console.log('Upload is running');
             break;
           default:
+            console.log('canceled?');
             break;
         }
       },
@@ -125,8 +140,11 @@ const NewVideo = ({ open, setOpen }) => {
     );
   };
 
-  const handleUpload = async () => {
-    const res = await axios.post('/', inputs);
+  const handleUpload = async (e) => {
+    e.preventDefault();
+    const res = await axios.post('/videos', inputs);
+    setOpen(false);
+    res.status === 200 && navigate(`/video/${res._id}`);
   };
 
   useEffect(() => {
@@ -136,11 +154,6 @@ const NewVideo = ({ open, setOpen }) => {
   useEffect(() => {
     files.video && uploadFile(files.video, 'videoUrl');
   }, [files.video]);
-
-  useEffect(() => {
-    console.log(inputs);
-    console.log(files);
-  }, [inputs, files]);
 
   return (
     <Dialog open={open} fullWidth={true}>
@@ -153,7 +166,25 @@ const NewVideo = ({ open, setOpen }) => {
         ) : (
           <Input type="file" accept="video/*" onChange={(e) => setFiles({ ...files, video: e.target.files[0] })} />
         )}
+        {/* <div>
+          <Button
+            onClick={() => {
+              manageFileUpload(task, 'pause');
+            }}
+          >
+            Pause/Resume
+          </Button>
+          <Button
+            onClick={() => {
+              manageFileUpload(task, 'cancel');
+            }}
+          >
+            Cancel
+          </Button>
+        </div> */}
+
         <Input type="text" placeholder="Video Title" name="title" onChange={updateInput} />
+
         <Description rows={10} placeholder="Description" name="description" onChange={updateInput} />
         <Input type="text" placeholder="Separate tags with commas." name="tags" onChange={updateInput} />
         <Label>Upload Image</Label>
