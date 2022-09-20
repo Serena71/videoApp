@@ -1,9 +1,9 @@
 export const darkTheme = {
   bg: '#181818',
-  bgLighter: '#202020',
+  bgLighter: '#303030',
   text: 'white',
   textSoft: '#aaaaaa',
-  soft: '#373737',
+  soft: '#606060',
 };
 
 export const lightTheme = {
