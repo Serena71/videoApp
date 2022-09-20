@@ -10,6 +10,7 @@ import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
 import ButtonMui from '@mui/material/Button';
 import Avatar from '../components/Avatar';
 import Comments from '../components/Comments';
+import Recommendation from '../components/Recommendation';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { startFetch, successfulFetch, failedFetch, videoReaction } from '../redux/videoSlice';
@@ -152,15 +153,15 @@ const Video = () => {
     <Container>
       <Content>
         <VideoWrapper>
-          {/* <iframe
+          <iframe
             width="100%"
-            height="750"
+            height="1200"
             src="https://www.youtube.com/embed/rMiRZ1iRC0A"
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
-          ></iframe> */}
+          ></iframe>
         </VideoWrapper>
         <Title>{currentVideo.title}</Title>
         <Details>
@@ -208,7 +209,7 @@ const Video = () => {
         <Hr />
         <Comments videoId={currentVideo._id} />
       </Content>
-      {/* <Recommendation baseVideo={}/> */}
+      <Recommendation baseVideo={currentVideo} />
     </Container>
   );
 };
